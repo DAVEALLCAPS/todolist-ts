@@ -14,7 +14,7 @@ interface Task {
 export default function Home() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [task, setTask] = useState<string>("");
-  const { toast } = useToast(); // Use the useToast hook
+  const { toast } = useToast();
   const [taskIdCounter, setTaskIdCounter] = useState(0);
 
   const addTask = () => {
@@ -70,7 +70,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen flex justify-center items-center bg-gray-100">
-      <div className="bg-white p-6 rounded-md shadow-md w-full max-w-md">
+      <div className="bg-white p-6 rounded-md shadow-md w-full max-w-xl">
         <h1 className="text-3xl font-bold mb-4">To Do List</h1>
         <div className="flex space-x-2 mb-4">
           <Input
@@ -80,7 +80,7 @@ export default function Home() {
           />
           <Button
             onClick={addTask}
-            className="bg-blue-500 text-white px-4 py-2 rounded shadow"
+            className="bg-blue-500 text-white px-4 py-2 rounded shadow w-1/4"
           >
             Add Task
           </Button>
