@@ -9,6 +9,8 @@ interface Task {
   id: number;
   text: string;
   isComplete: boolean;
+  createdAt: string;
+  completedAt: string | null;
 }
 
 export default function Home() {
@@ -21,7 +23,13 @@ export default function Home() {
     if (task.trim() !== "") {
       setTasks([
         ...tasks,
-        { id: taskIdCounter, text: task, isComplete: false },
+        {
+          id: taskIdCounter,
+          text: task,
+          isComplete: false,
+          createdAt: new Date().toISOString(),
+          completedAt: null,
+        },
       ]);
       setTaskIdCounter(taskIdCounter + 1);
       toast({
@@ -34,7 +42,13 @@ export default function Home() {
 
   const toggleTaskCompletion = (taskId: number) => {
     const updatedTasks = tasks.map((t) =>
-      t.id === taskId ? { ...t, isComplete: !t.isComplete } : t
+      t.id === taskId
+        ? {
+            ...t,
+            isComplete: !t.isComplete,
+            completedAt: !t.isComplete ? new Date().toISOString() : null,
+          }
+        : t
     );
     setTasks(updatedTasks);
 
@@ -93,14 +107,25 @@ export default function Home() {
                 task.isComplete ? "bg-green-100" : "bg-gray-50"
               }`}
             >
-              <span
+              <div
                 className={`flex items-center justify-between ${
                   task.isComplete
                     ? "line-through text-gray-500"
                     : "text-gray-700"
                 }`}
               >
-                {task.text}
+                <div>
+                  {task.text}
+                  <div className="text-xs text-gray-500">
+                    Created at: {new Date(task.createdAt).toLocaleString()}
+                  </div>
+                  {task.isComplete && (
+                    <div className="text-xs text-gray-500">
+                      Completed at:{" "}
+                      {new Date(task.completedAt!).toLocaleString()}
+                    </div>
+                  )}
+                </div>
                 <div className="space-x-2">
                   <Button
                     onClick={() => toggleTaskCompletion(task.id)}
@@ -115,7 +140,7 @@ export default function Home() {
                     Remove
                   </Button>
                 </div>
-              </span>
+              </div>
             </div>
           ))}
         </div>
