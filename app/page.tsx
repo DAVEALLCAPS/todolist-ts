@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState, ChangeEvent } from "react";
 import { useToast } from "@/components/ui/use-toast";
+import { ModeToggle } from "@/components/ModeToggle";
 
 interface Task {
   id: number;
@@ -83,10 +84,11 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen flex justify-center items-center bg-gray-100">
-      <div className="bg-white p-6 rounded-md shadow-md w-full max-w-xl">
+    <div className="min-h-screen flex justify-center items-center">
+      <div className="p-6 rounded-md shadow-md w-full max-w-xl">
         <h1 className="text-3xl font-bold mb-4">To Do List</h1>
         <div className="flex space-x-2 mb-4">
+          <ModeToggle />
           <Input
             value={task}
             onChange={handleInputChange}
@@ -104,14 +106,14 @@ export default function Home() {
             <div
               key={task.id}
               className={`p-2 border rounded ${
-                task.isComplete ? "bg-green-100" : "bg-gray-50"
+                task.isComplete ? "bg-green-300" : "bg"
               }`}
             >
               <div
                 className={`flex items-center justify-between ${
                   task.isComplete
                     ? "line-through text-gray-500"
-                    : "text-gray-700"
+                    : "text-primary"
                 }`}
               >
                 <div>
