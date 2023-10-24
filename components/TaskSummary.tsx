@@ -20,11 +20,20 @@ const TaskSummary: React.FC<TaskSummaryProps> = ({ tasks }) => {
       task.isComplete && task.completedAt && isToday(new Date(task.completedAt))
   ).length;
 
+  const SummaryItem: React.FC<{ label: string; value: number }> = ({
+    label,
+    value,
+  }) => (
+    <div className="text-center">
+      <div className="text-3xl font-bold">{value}</div>
+      <div className="text-sm text-gray-500">{label}</div>
+    </div>
+  );
+
   return (
-    <div className="mb-4">
-      <div className="text-lg font-semibold">Task Summary</div>
-      <div>Total Tasks: {totalTasks}</div>
-      <div>Tasks Completed Today: {tasksCompletedToday}</div>
+    <div className="mb-4 flex justify-around">
+      <SummaryItem label="Total Tasks" value={totalTasks} />
+      <SummaryItem label="Tasks Completed Today" value={tasksCompletedToday} />
     </div>
   );
 };
