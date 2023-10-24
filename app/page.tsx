@@ -5,6 +5,7 @@ import { useToast } from "@/components/ui/use-toast";
 import TaskForm from "@/components/TaskForm";
 import TaskItem from "@/components/TaskItem";
 import TaskSummary from "@/components/TaskSummary";
+import SearchBox from "@/components/SearchBox";
 
 interface Task {
   id: number;
@@ -18,6 +19,7 @@ const Home: React.FC = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const { toast } = useToast();
   const [taskIdCounter, setTaskIdCounter] = useState(0);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const addTask = (taskText: string) => {
     if (taskText.trim() !== "") {
@@ -37,7 +39,7 @@ const Home: React.FC = () => {
     }
   };
 
-  const toggleTaskCompletion = (taskId: number) => {
+  const toggleTaskCompletion = (taskId: number): void => {
     const updatedTasks = tasks.map((t) =>
       t.id === taskId
         ? {
@@ -84,21 +86,33 @@ const Home: React.FC = () => {
     });
   };
 
+  const filteredTasks = tasks.filter((task) =>
+    task.text.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div className="min-h-screen flex justify-center items-center">
-      <div className="p-6 rounded-md shadow-md w-full max-w-xl">
-        <h1 className="text-3xl font-bold mb-4">To Do List</h1>
-        <TaskSummary tasks={tasks} clearCompletedTasks={clearCompletedTasks} />
-        <TaskForm onAddTask={addTask} />
-        <div className="space-y-2">
-          {tasks.map((task) => (
-            <TaskItem
-              key={task.id}
-              task={task}
-              onToggleCompletion={toggleTaskCompletion}
-              onRemove={removeTask}
-            />
-          ))}
+      <div className="flex w-full max-w-4xl p-6 rounded-md">
+        <div className="flex flex-col w-1/3 space-y-4 pr-4 border-r">
+          <h1 className="text-3xl font-bold mb-4">To Do List</h1>
+          <TaskForm onAddTask={addTask} />
+          <TaskSummary
+            tasks={tasks}
+            clearCompletedTasks={clearCompletedTasks}
+          />
+          <SearchBox value={searchTerm} onChange={setSearchTerm} />
+        </div>
+        <div className="w-2/3 pl-4">
+          <div className="space-y-2">
+            {filteredTasks.map((task) => (
+              <TaskItem
+                key={task.id}
+                task={task}
+                onToggleCompletion={toggleTaskCompletion}
+                onRemove={removeTask}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </div>
