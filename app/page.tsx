@@ -75,11 +75,20 @@ const Home: React.FC = () => {
     }
   };
 
+  const clearCompletedTasks = () => {
+    const updatedTasks = tasks.filter((task) => !task.isComplete);
+    setTasks(updatedTasks);
+    toast({
+      title: "Completed Tasks Cleared",
+      description: "All completed tasks have been removed.",
+    });
+  };
+
   return (
     <div className="min-h-screen flex justify-center items-center">
       <div className="p-6 rounded-md shadow-md w-full max-w-xl">
         <h1 className="text-3xl font-bold mb-4">To Do List</h1>
-        <TaskSummary tasks={tasks} />
+        <TaskSummary tasks={tasks} clearCompletedTasks={clearCompletedTasks} />
         <TaskForm onAddTask={addTask} />
         <div className="space-y-2">
           {tasks.map((task) => (

@@ -1,5 +1,6 @@
 import React from "react";
 import { isToday } from "date-fns";
+import { Button } from "./ui/button";
 
 interface Task {
   id: number;
@@ -11,9 +12,13 @@ interface Task {
 
 interface TaskSummaryProps {
   tasks: Task[];
+  clearCompletedTasks: () => void;
 }
 
-const TaskSummary: React.FC<TaskSummaryProps> = ({ tasks }) => {
+const TaskSummary: React.FC<TaskSummaryProps> = ({
+  tasks,
+  clearCompletedTasks,
+}) => {
   const totalTasks = tasks.length;
   const tasksCompletedToday = tasks.filter(
     (task) =>
@@ -31,9 +36,22 @@ const TaskSummary: React.FC<TaskSummaryProps> = ({ tasks }) => {
   );
 
   return (
-    <div className="mb-4 flex justify-around">
-      <SummaryItem label="Total Tasks" value={totalTasks} />
-      <SummaryItem label="Tasks Completed Today" value={tasksCompletedToday} />
+    <div className="mb-4 flex flex-col items-center">
+      <div className="flex justify-around w-full">
+        <SummaryItem label="Total Tasks" value={totalTasks} />
+        <SummaryItem
+          label="Tasks Completed Today"
+          value={tasksCompletedToday}
+        />
+      </div>
+      {tasks.some((task) => task.isComplete) && (
+        <Button
+          onClick={clearCompletedTasks}
+          className="bg-red-500 text-white px-4 py-2 rounded shadow mt-4"
+        >
+          Clear All Completed
+        </Button>
+      )}
     </div>
   );
 };
