@@ -32,6 +32,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ onAddTask }) => {
       <ModeToggle />
       <div className="flex space-x-2">
         <Input
+          placeholder="Enter task..."
           value={task}
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
