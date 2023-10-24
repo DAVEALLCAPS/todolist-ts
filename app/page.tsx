@@ -103,6 +103,11 @@ const Home: React.FC = () => {
           <SearchBox value={searchTerm} onChange={setSearchTerm} />
         </div>
         <div className="w-2/3 pl-4">
+          {searchTerm && (
+            <div className="mb-4">
+              <span className="text-lg font-semibold">{`Tasks containing "${searchTerm}":`}</span>
+            </div>
+          )}
           <div className="space-y-2">
             {filteredTasks.map((task) => (
               <TaskItem
