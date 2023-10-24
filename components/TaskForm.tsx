@@ -1,7 +1,7 @@
-import React, { useState, ChangeEvent } from "react";
+import React, { useState, ChangeEvent, KeyboardEvent } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ModeToggle } from "@/components/ModeToggle"; // Make sure to import ModeToggle
+import { ModeToggle } from "@/components/ModeToggle";
 
 interface TaskFormProps {
   onAddTask: (text: string) => void;
@@ -15,20 +15,38 @@ const TaskForm: React.FC<TaskFormProps> = ({ onAddTask }) => {
   };
 
   const handleSubmit = () => {
-    onAddTask(task);
-    setTask("");
+    if (task.trim() !== "") {
+      onAddTask(task.trim());
+      setTask("");
+    }
+  };
+
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
+      handleSubmit();
+    }
   };
 
   return (
-    <div className="flex space-x-2 mb-4">
-      <ModeToggle /> {/* Add ModeToggle back in */}
-      <Input value={task} onChange={handleInputChange} className="flex-grow" />
-      <Button
-        onClick={handleSubmit}
-        className="bg-blue-500 text-white px-4 py-2 rounded shadow w-1/4"
-      >
-        Add Task
-      </Button>
+    <div className="flex flex-col space-y-2 mb-4">
+      <ModeToggle />
+      <div className="flex space-x-2">
+        <Input
+          value={task}
+          onChange={handleInputChange}
+          onKeyDown={handleKeyDown}
+          className="flex-grow"
+        />
+        <Button
+          onClick={handleSubmit}
+          className="bg-blue-500 text-white px-4 py-2 rounded shadow"
+        >
+          Add Task
+        </Button>
+      </div>
+      <span className="text-xs text-gray-500 text-center">
+        Ctrl+Enter to submit
+      </span>
     </div>
   );
 };
